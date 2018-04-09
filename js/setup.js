@@ -8,19 +8,38 @@ var getRandomInt = function (max) {
   return Math.round(Math.random() * Math.round(max));
 };
 
-var getRandomWizardFullName = function (wizardNames, wizardSurnames) {
-  return getRandomInt(1) ? wizardNames[getRandomInt(wizardNames.length - 1)] + ' ' + wizardSurnames[getRandomInt(wizardSurnames.length - 1)] :
-    wizardSurnames[getRandomInt(wizardSurnames.length - 1)] + ' ' + wizardNames[getRandomInt(wizardNames.length - 1)];
+var getRandomBool = function () {
+  return getRandomInt(1);
 };
 
-var getWizards = function (wizardsNumber, getWizardsNames, getWizardsSurnames, getWizardsCoatColors, getWizardsEyesColors) {
+var getRandomWizardFullName = function (wizardNames, wizardSurnames) {
+  var nameIndex = getRandomInt(wizardNames.length - 1);
+  var surnameIndex = getRandomInt(wizardNames.length - 1);
+  var reverseOrder = getRandomBool();
+
+  if (reverseOrder) {
+    return wizardNames[nameIndex] + ' ' + wizardSurnames[surnameIndex];
+  } else {
+    return wizardSurnames[nameIndex] + ' ' + wizardNames[surnameIndex];
+  }
+};
+
+var getRandomArrayElem = function (list) {
+  var randomIndex = getRandomInt(list.length - 1);
+
+  return list[randomIndex];
+};
+
+var getWizards = function (wizardsNumber, wizardsNames, wizardsSurnames, wizardsCoatColors, wizardsEyesColors) {
   var wizards = [];
 
   for (var i = 0; i < wizardsNumber; i++) {
-    wizards[i] = {};
-    wizards[i].name = getRandomWizardFullName(getWizardsNames, getWizardsSurnames);
-    wizards[i].coatColor = getWizardsCoatColors[getRandomInt(getWizardsCoatColors.length - 1)];
-    wizards[i].eyesColor = getWizardsEyesColors[getRandomInt(getWizardsEyesColors.length - 1)];
+    var wizard = {
+      name: getRandomWizardFullName(wizardsNames, wizardsSurnames),
+      coatColor: getRandomArrayElem(wizardsCoatColors),
+      eyesColor: getRandomArrayElem(wizardsEyesColors)
+    };
+    wizards.push(wizard);
   }
   return wizards;
 };
@@ -35,7 +54,7 @@ var renderWizard = function (wizard, template) {
   return wizardElement;
 };
 
-var createSimilarWizardsList = function (SimilarWizardsNumber) {
+var createSimilarWizardsList = function (similarWizardsCount) {
 
   var setup = document.querySelector('.setup');
   var setupSimilar = document.querySelector('.setup-similar');
@@ -51,9 +70,9 @@ var createSimilarWizardsList = function (SimilarWizardsNumber) {
 
   showElement(setup);
   showElement(setupSimilar);
-  var wizards = getWizards(SimilarWizardsNumber, names, surnames, coatColors, eyesColors);
+  var wizards = getWizards(similarWizardsCount, names, surnames, coatColors, eyesColors);
 
-  for (var i = 0; i < SimilarWizardsNumber; i++) {
+  for (var i = 0; i < similarWizardsCount; i++) {
     fragment.appendChild(renderWizard(wizards[i], similarWizardTemplate));
   }
 
