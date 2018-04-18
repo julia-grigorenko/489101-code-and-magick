@@ -57,7 +57,7 @@ var renderWizard = function (wizard, template) {
 var createSimilarWizardsList = function (similarWizardsCount) {
 
   var setup = document.querySelector('.setup');
-  var setupSimilar = document.querySelector('.setup-similar');
+  var setupSimilar = setup.querySelector('.setup-similar');
 
   var names = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
   var surnames = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
@@ -68,7 +68,6 @@ var createSimilarWizardsList = function (similarWizardsCount) {
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var fragment = document.createDocumentFragment();
 
-  //showElement(setup);
   showElement(setupSimilar);
   var wizards = getWizards(similarWizardsCount, names, surnames, coatColors, eyesColors);
 
@@ -83,53 +82,44 @@ var getSetupPopup = function () {
   var setup = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = document.querySelector('.setup-close');
-  var setupOpenIcon = document.querySelector('.setup-open-icon');
   var setupUserName = document.querySelector('.setup-user-name');
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
-  setupOpenIcon.onfocus = function() {
+  setupUserName.onfocus = function () {
     this.focused = true;
-  }
+  };
 
-  setupOpen.onblur = function() {
+  setupUserName.onblur = function () {
     this.focused = false;
-  }
+  };
 
-  setupUserName.onfocus = function() {
-    this.focused = true;
-  }
-
-  setupUserName.onblur = function() {
-    this.focused = false;
-  }
-
-  var onPopupEscPress = function(evt) {
+  var onPopupEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE && (!setupUserName.focused)) {
       closePopup();
     }
   };
 
-  var onSetupCloseEnterPress = function(evt) {
-    if(evt.keyCode === ENTER_KEYCODE){
+  var onSetupCloseEnterPress = function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
       closePopup();
     }
   };
 
-  var onSetupOpenEnterPress = function(evt) {
-    if(evt.keyCode === ENTER_KEYCODE){
+  var onSetupOpenEnterPress = function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
       openPopup();
     }
   };
 
-  var openPopup = function() {
+  var openPopup = function () {
     setup.classList.remove('hidden');
 
     document.addEventListener('keydown', onPopupEscPress);
     setupClose.addEventListener('keydown', onSetupCloseEnterPress);
   };
 
-  var closePopup = function() {
+  var closePopup = function () {
     setup.classList.add('hidden');
 
     document.removeEventListener('keydown', onPopupEscPress);
@@ -142,14 +132,14 @@ var getSetupPopup = function () {
 
 
   var userNameInput = setup.querySelector('.setup-user-name');
-  userNameInput.addEventListener('invalid', function (evt) {
+  userNameInput.addEventListener('invalid', function () {
     if (userNameInput.validity.tooShort) {
       userNameInput.setCustomValidity('Имя должно состоять минимум из 2-х символов');
     } else if (userNameInput.validity.tooLong) {
       userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов');
     } else if (userNameInput.validity.valueMissing) {
       userNameInput.setCustomValidity('Обязательное поле');
-    }else {
+    } else {
       userNameInput.setCustomValidity('');
     }
   });
@@ -187,7 +177,7 @@ var changeEyesFireball = function () {
 
   // Перекрашиваем фаербол при клике.
   fireballWrap.addEventListener('click', function () {
-    var currentColor =getColor(fireballColors);
+    var currentColor = getColor(fireballColors);
     fireballWrap.style.background = currentColor;
     inputFireball.value = currentColor;
   });
